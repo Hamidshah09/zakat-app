@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     @if ($errors->any())
@@ -26,11 +26,13 @@
                                 <option value="cnic" {{ old('search_type') == 'cnic' ? 'selected' : '' }}>CNIC </option> 
                                 <option value="name" {{ old('search_type') == 'name' ? 'selected' : '' }}>Name</option>
                                 <option value="id" {{ old('search_type') == 'id' ? 'selected' : '' }}>id</option> 
+                                <option value="zc_id" {{ old('search_type') == 'zc_id' ? 'selected' : '' }}>Zakkat Committee</option>
+                                <option value="ac_id" {{ old('search_type') == 'ac_id' ? 'selected' : '' }}>Assistant Commissioner</option> 
                             </select>
                             <x-primary-button class="mt-1 ms-3" type="submit">
                                 {{ __('Search') }}
                             </x-primary-button>
-                            <a href="{{route('beneficiary.create')}}" class="py-1 bg-gray-800 border text-white mx-2 px-2 rounded">New</a>        
+                            <a href="{{route('beneficiary.create')}}" class="py-1 bg-gray-800 border text-white mx-2 px-3 mt-1 rounded-md">New</a>        
                         </div>
                     </form>
                     
@@ -71,7 +73,7 @@
                 </div>
                 
                 <div class="back-width mx-3 mt-2 mb-2">
-                    {{ $beneficiaries->links() }}
+                    {{ $beneficiaries->appends(request()->query())->links() }}
                 </div>
                 </div>
             </div>

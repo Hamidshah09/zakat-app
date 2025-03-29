@@ -30,11 +30,20 @@ class BeneficiaryController extends Controller
                 $query->where('name', 'like', "%".$request->search."%");
             }elseif($request->search_type=='id'){
                 $query->where('id', $request->search);
+            }elseif($request->search_type=='zc_id'){
+                $query->whereHas('zakatcommittees', function ($q) use ($request) {
+                    $q->where('lzc_name', $request->search);
+                });            
+            }elseif($request->search_type=='ac_id'){
+                $query->whereHas('asstcommissioners', function ($q) use ($request) {
+                    $q->where('name', 'like', "%".$request->search."%");
+                });            
             }
+            
         }
 
         $beneficiaries = $query->paginate(10);
-        
+        // return $beneficiaries;
         return view('beneficiry.index', compact('beneficiaries'));
     }
     public function create(){
