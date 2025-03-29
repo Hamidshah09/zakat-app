@@ -10,18 +10,33 @@ use Illuminate\Support\Facades\Auth;
 
 class BeneficiaryController extends Controller
 {
-    public function index(){
-        $beneficiaries = Beneficiaries::with(['users'=>function($q){
-                                            $q->select('id', 'name');
-                                        }])
-                                        ->with(['zakatcommittees'=>function($q){
-                                            $q->select('id', 'lzc_name');
-                                        }])
-                                        ->with(['asstcommissioners'=>function($q){
-                                            $q->select('id', 'sub_division_id','name')->with('subdivisions');
-                                        }])
-                                        ->orderBy('id', 'desc')
-                                        ->paginate(10);
+    public function index(Request $request){
+        if ($request->search){
+            $beneficiaries = Beneficiaries::where('cnic', $request->search)->with(['users'=>function($q){
+                $q->select('id', 'name');
+            }])
+            ->with(['zakatcommittees'=>function($q){
+                $q->select('id', 'lzc_name');
+            }])
+            ->with(['asstcommissioners'=>function($q){
+                $q->select('id', 'sub_division_id','name')->with('subdivisions');
+            }])
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+        }else{
+            $beneficiaries = Beneficiaries::with(['users'=>function($q){
+                $q->select('id', 'name');
+            }])
+            ->with(['zakatcommittees'=>function($q){
+                $q->select('id', 'lzc_name');
+            }])
+            ->with(['asstcommissioners'=>function($q){
+                $q->select('id', 'sub_division_id','name')->with('subdivisions');
+            }])
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+        }
+        
         return view('beneficiry.index', compact('beneficiaries'));
     }
     public function create(){
@@ -55,7 +70,7 @@ class BeneficiaryController extends Controller
     }
 
     public function edit($id){
-        $beneficiary = Beneficiaries::findorfail($id)->first();
+        $beneficiary = Beneficiaries::findorfail($id);
         $zakatcommittees = ZakatCommitties::orderBy('lzc_name', 'asc')->get();
         $asstcommissioners = AssistantCommissioners::with('subdivisions')->get();
         // return $asstcommissioners;

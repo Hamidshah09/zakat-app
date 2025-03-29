@@ -40,7 +40,7 @@
 
                         <div class="mt-2">
                             <x-input-label for="zc_id" :value="__('Zakkat Committee')" />
-                            <select name="zc_id" id="" class="rounded w-full">
+                            <select name="zc_id" id="zc_id" class="rounded w-full">
                                 @foreach ($zakatcommittees as $zakatcommittee)
                                     <option value="{{$zakatcommittee->id}}">{{$zakatcommittee->lzc_name}}</option>    
                                 @endforeach
@@ -50,7 +50,7 @@
 
                         <div class="mt-2"> 
                             <x-input-label for="ac_id" :value="__('Assistant Commissioner')" />
-                            <select name="ac_id" id="" class="rounded w-full">
+                            <select name="ac_id" id="ac_id" class="rounded w-full">
                                 @foreach ($asstcommissioners as $asstcommissioner)
                                     <option value="{{$asstcommissioner->id}}">{{$asstcommissioner->name. ", Assistant Commissioner(" .$asstcommissioner->subdivisions->name.")" }} </option>    
                                 @endforeach
@@ -69,4 +69,17 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('zc_id').addEventListener('change', function() {
+            const zakatcommittee_data = @json($zakatcommittees); // Laravel data passed as JSON
+            const ac_element = document.getElementById('ac_id'); // Target Assistant Commissioner select element
+            
+            // Loop through the data and update the selected option
+            zakatcommittee_data.forEach(zakatcommittee => {
+                if (zakatcommittee.id == this.value) {
+                    ac_element.value = zakatcommittee.ac_id; // Set the matching value
+                }
+            });
+        });
+    </script>
 </x-app-layout>

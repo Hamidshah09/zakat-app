@@ -3,13 +3,20 @@
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\AssistantCommissioners;
+use App\Models\Beneficiaries;
+use App\Models\ZakatCommitties;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
+Route::get('/dashboard', function(){
+        // $acs = AssistantCommissioners::with(['zakatcommitties'=>function($query){
+        //     $query->withCount('beneficiaries');
+        // }])-> with('subdivisions')->get();
+        $acs = AssistantCommissioners::with('subdivisions')->withCount('beneficiaries')->get();
+    return view('dashboard', compact('acs'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
