@@ -9,6 +9,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <div>
+                        <h1 class="font-bold">Assistant Commissioner wise Total Records Updated</h1>
+                    </div>
                     <table class="table-auto border-collapse border border-gray-400 w-full mt-2">
                         <thead>
                           <tr class="bg-gray-200">
@@ -38,6 +41,27 @@
                                 <td class="border px-4 py-2 font-bold w-1/2">Total</td>
                                 <td class="border px-4 py-2 font-bold w-1/2">{{$total}}</td>
                             </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <h1 class="font-bold mt-3">User Performance</h1>
+                    </div>
+                    <table class="table-auto border-collapse border border-gray-400 w-full mt-2">
+                        <thead>
+                          <tr class="bg-gray-200">
+                            <th class="border px-4 py-2 w-1/2">User Name</th>
+                            <th class="border px-4 py-2 w-1/2">No of Records</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($users as $user)
+                                <tr>
+                                    <td class="border px-4 py-2 w-1/2">{{ $user->name}}</td>
+                                    <td class="border px-4 py-2 w-1/2">{{$user->beneficiaries_count}}</td>
+                                    
+                                </tr>
+                            @endforeach
+                            
                         </tbody>
                     </table>
                 </div>

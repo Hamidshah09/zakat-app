@@ -11,31 +11,29 @@ use Illuminate\Support\Facades\Auth;
 class BeneficiaryController extends Controller
 {
     public function index(Request $request){
+        $query = Beneficiaries::with(['users'=>function($q){
+            $q->select('id', 'name');
+        }])
+        ->with(['zakatcommittees'=>function($q){
+            $q->select('id', 'lzc_name');
+        }])
+        ->with(['asstcommissioners'=>function($q){
+            $q->select('id', 'sub_division_id','name')->with('subdivisions');
+        }])
+        ->orderBy('id', 'desc');
+        
         if ($request->search){
-            $beneficiaries = Beneficiaries::where('cnic', $request->search)->with(['users'=>function($q){
-                $q->select('id', 'name');
-            }])
-            ->with(['zakatcommittees'=>function($q){
-                $q->select('id', 'lzc_name');
-            }])
-            ->with(['asstcommissioners'=>function($q){
-                $q->select('id', 'sub_division_id','name')->with('subdivisions');
-            }])
-            ->orderBy('id', 'desc')
-            ->paginate(10);
-        }else{
-            $beneficiaries = Beneficiaries::with(['users'=>function($q){
-                $q->select('id', 'name');
-            }])
-            ->with(['zakatcommittees'=>function($q){
-                $q->select('id', 'lzc_name');
-            }])
-            ->with(['asstcommissioners'=>function($q){
-                $q->select('id', 'sub_division_id','name')->with('subdivisions');
-            }])
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+            
+            if($request->search_type=='cnic'){
+                $query->where('cnic', 'like', "%".$request->search."%");
+            }elseif($request->search_type=='name'){
+                $query->where('name', 'like', "%".$request->search."%");
+            }elseif($request->search_type=='id'){
+                $query->where('id', $request->search);
+            }
         }
+
+        $beneficiaries = $query->paginate(10);
         
         return view('beneficiry.index', compact('beneficiaries'));
     }

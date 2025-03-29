@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Models\AssistantCommissioners;
 use App\Models\Beneficiaries;
@@ -11,13 +12,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function(){
-        // $acs = AssistantCommissioners::with(['zakatcommitties'=>function($query){
-        //     $query->withCount('beneficiaries');
-        // }])-> with('subdivisions')->get();
-        $acs = AssistantCommissioners::with('subdivisions')->withCount('beneficiaries')->get();
-    return view('dashboard', compact('acs'));
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
