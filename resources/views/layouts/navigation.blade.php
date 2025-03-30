@@ -23,6 +23,12 @@
                         {{ __('Beneficiaries') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('zakatcommittee.index')" :active="request()->routeIs('zakatcommittee.index')">
+                        {{ __('Zakat Committees') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -82,6 +88,11 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('beneficiary.index')" :active="request()->routeIs('beneficiary.index')">
                 {{ __('Beneficiaries') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('zakatcommittee.index')" :active="request()->routeIs('zakatcommittee.index')">
+                {{ __('Zakat Committees') }}
             </x-responsive-nav-link>
         </div>
 
