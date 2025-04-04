@@ -43,6 +43,27 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="mt-1">
+                        <h1 class="font-bold">Date Wise Overall Performance</h1>
+                    </div>
+                    <table class="table-auto border-collapse border border-gray-400 w-full mt-2">
+                        <thead>
+                          <tr class="bg-gray-200">
+                            <th class="border px-4 py-2 w-auto">Date</th>
+                            <th class="border px-4 py-2 w-auto">No of Entries</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+            
+                            @foreach ($results as $key => $value)
+                                <tr>
+                                    <td class="border px-4 py-2 w-auto">{{ $key}}</td>
+                                    <td class="border px-4 py-2 w-auto">{{$value}}</td>
+                                </tr>
+                            @endforeach
+                            
+                        </tbody>
+                    </table>
                     <div>
                         <h1 class="font-bold mt-3">User Performance</h1>
                     </div>

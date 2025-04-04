@@ -26,6 +26,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/beneficiary/edit/{id}', [BeneficiaryController::class, 'edit'])->name('beneficiary.edit');
     Route::post('/beneficiary/update/{id}', [BeneficiaryController::class, 'update'])->name('beneficiary.update');
     Route::get('/beneficiaries/export/csv', [BeneficiaryController::class, 'exportToCSV'])->name('beneficiaries.export.csv');
+    Route::get('/test', function(){
+        
+        $date_array = [];
+        $date_test = array();
+        $date = new DateTime('2025-03-28'); // Replace with your desired date
+        $today = new DateTime();
+        for($i=1; $i<10; $i++){
+            $date->modify('+1 day'); // Add one day
+            array_push($date_test, $date->format('Y-m-d'));
+            if ($today>=$date){
+                $startOfDay = $date->format('Y-m-d 00:00:00'); // Beginning of the day
+                $endOfDay = $date->format('Y-m-d 23:59:59'); // End of the day
+                $count = Beneficiaries::whereBetween('created_at', [$startOfDay, $endOfDay])->count(); // Count records for the day
+                if ($count!=0){
+                    $date_array[$date->format('Y-m-d')] = $count;
+                }
+                
+            }
+        }
+        
+        return $date_array;
+
+    });
     route::get('/import', function(){
         
             $filename =  public_path('uploads/upload1.csv'); // Replace with your file path
