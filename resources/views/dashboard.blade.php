@@ -44,7 +44,7 @@
                         </tbody>
                     </table>
                     <div class="mt-1">
-                        <h1 class="font-bold">Date Wise Overall Performance</h1>
+                        <h1 class="font-bold">Daily Performance Report</h1>
                     </div>
                     <table class="table-auto border-collapse border border-gray-400 w-full mt-2">
                         <thead>

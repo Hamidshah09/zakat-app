@@ -14,7 +14,8 @@ class DashboardController extends Controller
         
         $date = new DateTime('2025-03-28'); // Replace with your desired date
         $today = new DateTime();
-        for($i=1; $i<10; $i++){
+        $lenth = $date->diff($today);
+        for($i=1; $i<$lenth->d+1; $i++){
             $date->modify('+1 day'); // Add one day
             if ($today>=$date){
                 $startOfDay = $date->format('Y-m-d 00:00:00'); // Beginning of the day
@@ -28,8 +29,18 @@ class DashboardController extends Controller
         }
         
         $acs = AssistantCommissioners::with('subdivisions')->withCount('beneficiaries')->get();
-        $users = User::withCount('beneficiaries')->orderBy('beneficiaries_count', 'desc')->get();
+        // $users = User::whereHas(['beneficiaries'=>function($q)use($startOfDay, $endOfDay){
+        //     $q->select('id', 'created_at')->whereBetween('created_at', [$startOfDay, $endOfDay])->count();
+        // }])->orderBy('beneficiaries_count', 'desc')->get();
+        #->withCount('beneficiaries')
+        $users = User::withCount(['beneficiaries' => function($q) use ($startOfDay, $endOfDay) {
+            $q->whereBetween('created_at', [$startOfDay, $endOfDay]);
+        }])
+        ->orderBy('beneficiaries_count', 'desc')
+        ->get();
         
-    return view('dashboard', compact('acs', 'users', 'results'));
+        
+        // return ['difference'=>$lenth];
+        return view('dashboard', compact('acs', 'users', 'results'));
     }
 }

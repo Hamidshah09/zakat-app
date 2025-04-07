@@ -15,11 +15,11 @@ class BeneficiaryController extends Controller
             $q->select('id', 'name');
         }])
         ->with(['zakatcommittees'=>function($q){
-            $q->select('id', 'lzc_name');
+            $q->select('id', 'lzc_name')->with(['asstcommissioners'=>function($q){
+                $q->select('id', 'sub_division_id','name')->with('subdivisions');
+            }]);
         }])
-        ->with(['asstcommissioners'=>function($q){
-            $q->select('id', 'sub_division_id','name')->with('subdivisions');
-        }])
+        
         ->orderBy('id', 'desc');
         
         if ($request->search){
